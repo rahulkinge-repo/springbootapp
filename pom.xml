@@ -10,7 +10,7 @@
         <version>2.4.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.manulife</groupId>
+    <groupId>com.api</groupId>
     <artifactId>springbootapp</artifactId>
     <version>1.0.0</version>
     <name>learning-spring</name>
@@ -60,5 +60,26 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+    <repository>
+        <id>rahulkinge3101</id>
+        <url>https://pkgs.dev.azure.com/rahulkinge3101/_packaging/rahulkinge3101/maven/v1</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+    </repositories>
+
+
+    <distributionManagement>
+        <repository>
+            <id>rahulkinge3101</id>
+            <url>https://pkgs.dev.azure.com/rahulkinge3101/_packaging/rahulkinge3101/maven/v1</url>
+        </repository>
+    </distributionManagement>
 
 </project>
