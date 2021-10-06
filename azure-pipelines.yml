@@ -16,8 +16,12 @@ steps:
     SonarCloud: 'Sonarcloud-connection'
     organization: 'app-org-scanner'
     scannerMode: 'Other'
-    extraProperties: 
+    extraProperties: |
+      # Additional properties that will be passed to the scanner, 
+      # Put one key=value per line, example:
+      # sonar.exclusions=**/*.bin
       sonar.projectKey=learning-spring
+      
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -41,3 +45,11 @@ steps:
     targetPath: '$(Pipeline.Workspace)'
     artifact: 'springbootapp'
     publishLocation: 'pipeline'
+    
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1 (2c4cd66e-64e1-4711-8d8e-66f00fb36f53)'
+    appType: 'webApp'
+    WebAppName: 'devops-demoapp'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.jar'
