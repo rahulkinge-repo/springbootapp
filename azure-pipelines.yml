@@ -39,6 +39,6 @@ steps:
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)/springbootapp/s/target/*.jar'
+    targetPath: '$(Pipeline.Workspace)'
     artifact: 'springbootapp'
     publishLocation: 'pipeline'
