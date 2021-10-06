@@ -37,10 +37,10 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-- task: WhiteSource@21
+#- task: WhiteSource@21
 
-- task: PublishPipelineArtifact@1
+- task: PublishBuildArtifacts@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'springbootapp'
-    publishLocation: 'pipeline'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'springbootapp'
+    publishLocation: 'Container'
