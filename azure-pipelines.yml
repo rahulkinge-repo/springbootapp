@@ -37,7 +37,7 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-#- task: WhiteSource@21
+- task: WhiteSource@21
 
 - task: PublishBuildArtifacts@1
   inputs:
