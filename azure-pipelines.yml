@@ -41,7 +41,7 @@ steps:
 
 - task: MavenAuthenticate@0
   inputs:
-    artifactsFeeds: 'rahulkinge3101'
+    artifactsFeeds: 'devopsDemoDeed'
 
 - task: PublishPipelineArtifact@1
   inputs:
