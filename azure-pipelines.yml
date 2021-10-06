@@ -17,7 +17,7 @@ steps:
     organization: 'app-org-scanner'
     scannerMode: 'Other'
     extraProperties:
-      sonar.projectKey= demo-app3101
+      sonar.projectKey=demo-app3101
 
 - task: Maven@3
   inputs:
