@@ -62,23 +62,23 @@
     </build>
 
     <repositories>
-    <repository>
-        <id>rahulkinge3101</id>
-        <url>https://pkgs.dev.azure.com/rahulkinge3101/_packaging/rahulkinge3101/maven/v1</url>
-        <releases>
-            <enabled>true</enabled>
-        </releases>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-    </repository>
+        <repository>
+            <id>devopsDemoDeed</id>
+            <url>https://pkgs.dev.azure.com/rahulkinge3101/devops-demo/_packaging/devopsDemoDeed/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
 
     <distributionManagement>
         <repository>
-            <id>rahulkinge3101</id>
-            <url>https://pkgs.dev.azure.com/rahulkinge3101/_packaging/rahulkinge3101/maven/v1</url>
+            <id>devopsDemoDeed</id>
+            <url>https://pkgs.dev.azure.com/rahulkinge3101/devops-demo/_packaging/devopsDemoDeed/maven/v1</url>
         </repository>
     </distributionManagement>
 
