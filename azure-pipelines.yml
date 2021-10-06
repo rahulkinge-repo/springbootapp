@@ -13,12 +13,11 @@ steps:
 
 - task: SonarCloudPrepare@1
   inputs:
-    SonarCloud: 'sonarConnection'
+    SonarCloud: 'Sonarcloud-connection'
     organization: 'app-org-scanner'
     scannerMode: 'Other'
-    extraProperties:
+    extraProperties: 
       sonar.projectKey=learning-spring
-
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
