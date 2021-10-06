@@ -37,14 +37,9 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-#- task: WhiteSource@21
-
-- task: MavenAuthenticate@0
+    
+- task: PublishBuildArtifacts@1
   inputs:
-    artifactsFeeds: 'devopsDemoDeed'
-
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'springbootapp'
-    publishLocation: 'pipeline'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
