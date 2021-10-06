@@ -14,7 +14,7 @@
     <artifactId>springbootapp</artifactId>
     <version>1.0.0</version>
     <name>learning-spring</name>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <description>Demo application for Spring Boot</description>
 
     <properties>
