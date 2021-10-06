@@ -37,8 +37,8 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-    
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/springbootapp/s/target/'
-    ArtifactName: 'springbootapp'
+    targetPath: '$(Pipeline.Workspace)/springbootapp/s/target/*.jar'
+    artifact: 'springbootapp'
+    publishLocation: 'pipeline'
