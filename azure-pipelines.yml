@@ -37,6 +37,8 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
+- task: WhiteSource@21
+
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
