@@ -40,5 +40,5 @@ steps:
     
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/springbootapp/s/target/springbootapp-1.0.0.jar'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/springbootapp/s/target/'
     ArtifactName: 'springbootapp'
