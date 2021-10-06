@@ -39,6 +39,10 @@ steps:
 
 #- task: WhiteSource@21
 
+- task: MavenAuthenticate@0
+  inputs:
+    artifactsFeeds: 'rahulkinge3101'
+
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
