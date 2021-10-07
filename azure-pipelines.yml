@@ -33,6 +33,10 @@ steps:
     sqMavenPluginVersionChoice: 'latest'
     goals: 'package'
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
