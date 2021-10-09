@@ -26,6 +26,12 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
 
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: 'deployment/'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/deployment'
+
+
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
