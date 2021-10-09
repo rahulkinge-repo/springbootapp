@@ -1,3 +1,8 @@
 variables:
   sonarprojectKey: 'learning-spring'
   jdkversion: '1.11'
+  artifactname: 'springbootapp'
+  acrname: 'containerRegistry'
+  acrrepo: 'devopsDemo87'
+
+

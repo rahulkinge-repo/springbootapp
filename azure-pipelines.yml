@@ -47,13 +47,13 @@ steps:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Pipeline.Workspace)'
-      artifact: 'springbootapp'
+      artifact: ${{ variables.artifactname }}
       publishLocation: 'pipeline'
 
   - task: Docker@2
     inputs:
-      containerRegistry: 'devopsDemo87'
-      repository: 'devopsDemo87'
+      containerRegistry: ${{ variables.acrname }}
+      repository: '$(variables.acrrepo)'
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
 
