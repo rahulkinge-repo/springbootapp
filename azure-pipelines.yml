@@ -94,7 +94,7 @@ stages:
               templateLocation: 'Linked artifact'
               csmFile: '$(Build.ArtifactStagingDirectory)/s/deployment/template.json'
               csmParametersFile: '$(Build.ArtifactStagingDirectory)/s/deployment/parametersFile.json'
-          
+              deploymentMode: 'Incremental'
           
           - task: DownloadPipelineArtifact@2
             inputs:
