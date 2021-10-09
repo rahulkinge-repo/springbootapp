@@ -11,6 +11,7 @@ pool:
 
 variables:
   - template: parameters.yml
+
 steps:
 
   - task: SonarCloudPrepare@1
@@ -27,7 +28,7 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '${ variables.jdkVersion }'
+      jdkVersionOption: '1.11'
       mavenVersionOption: 'Default'
       mavenAuthenticateFeed: false
       effectivePomSkip: false
