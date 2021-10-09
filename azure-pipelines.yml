@@ -53,3 +53,4 @@ steps:
       repository: 'devopsDemo87'
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
+
