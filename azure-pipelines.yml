@@ -53,7 +53,7 @@ steps:
   - task: Docker@2
     inputs:
       containerRegistry: ${{ variables.acrname }}
-      repository: ${{ variables.acrrepo }}
+      repository: '$(variables.acrrepo)'
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
 
