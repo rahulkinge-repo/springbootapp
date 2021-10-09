@@ -14,7 +14,7 @@ variables:
 
 steps:
 
-  - task: SonarCloudSetup
+  - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'sonarConnection'
       organization: 'app-org-scanner'
@@ -22,7 +22,7 @@ steps:
       extraProperties:
         sonar.projectKey=${{ variables.sonarprojectKey }}
 
-  - task: MavenBuild
+  - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
       publishJUnitResults: true
@@ -36,21 +36,21 @@ steps:
       sqMavenPluginVersionChoice: 'latest'
       goals: 'package'
 
-  - task: PublishTestResults
+  - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/TEST-*.xml'
-  - task: SonarCloudPublish
+  - task: SonarCloudPublish@1
     inputs:
       pollingTimeoutSec: '300'
 
-  - task: PublishArtifacts
+  - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Pipeline.Workspace)'
       artifact: ${{ variables.artifactname }}
       publishLocation: 'pipeline'
 
-  - task: DockerBuildAndAcrPush
+  - task: Docker@2
     inputs:
       containerRegistry: ${{ variables.acrname }}
       repository: ${{ variables.acrrepo }}
