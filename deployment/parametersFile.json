@@ -6,7 +6,7 @@
       "value": "aks101cluster-vmss"
     },
     "location": {
-      "value": "[resourceGroup().location]"
+      "value": "Central US"
     },
     "dnsPrefix": {
       "value": "springboot"
