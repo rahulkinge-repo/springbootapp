@@ -6,50 +6,114 @@
 trigger:
   - master
 
-pool:
-  vmImage: ubuntu-latest
-
 variables:
   - template: parameters.yml
 
-steps:
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
 
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: 'sonarConnection'
-      organization: 'app-org-scanner'
-      scannerMode: 'Other'
-      extraProperties:
-        sonar.projectKey=${{ variables.sonarprojectKey }}
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'sonarConnection'
+        organization: 'app-org-scanner'
+        scannerMode: 'Other'
+        extraProperties:
+          sonar.projectKey=${{ variables.sonarprojectKey }}
 
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.xml'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: ${{ variables.jdkversion }}
-      mavenVersionOption: 'Default'
-      mavenAuthenticateFeed: false
-      effectivePomSkip: false
-      sonarQubeRunAnalysis: true
-      sqMavenPluginVersionChoice: 'latest'
-      goals: 'package'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: ${{ variables.jdkversion }}
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
+        goals: 'package'
 
-  - task: SonarCloudPublish@1
-    inputs:
-      pollingTimeoutSec: '300'
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
 
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Pipeline.Workspace)'
-      artifact: ${{ variables.artifactname }}
-      publishLocation: 'pipeline'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: ${{ variables.artifactname }}
+        publishLocation: 'pipeline'
 
-  - task: Docker@2
-    inputs:
-      containerRegistry: ${{ variables.acrname }}
-      repository: ${{ variables.acrrepo }}
-      command: 'buildAndPush'
-      Dockerfile: '**/Dockerfile'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)/s/kubernetes'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
 
+    - task: Docker@2
+      inputs:
+        containerRegistry: ${{ variables.acrname }}
+        repository: ${{ variables.acrrepo }}
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+    
+        
+    
+
+- stage: Deploy
+  displayName: Deploy to Dev
+  dependsOn: Build
+  variables:
+    acrsecret: acrauth
+    
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy to AKS
+    environment: 'k8sdev.default'
+    pool: 
+      vmImage: ubuntu-latest
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: '<your-resource-manager-connection>'
+              subscriptionId: '<your-subscription-id>'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: ''
+              location: ''
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Build.ArtifactStagingDirectory)/s/deployment/template.json'
+              csmParametersFile: '$(Build.ArtifactStagingDirectory)/s/deployment/parametersFile.json'
+          
+          
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              buildType: 'current'
+              artifactName: 'manifests'
+              targetPath: '$(Pipeline.Workspace)/manifests'
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'createSecret'
+              namespace: 'default'
+              secretType: 'dockerRegistry'
+              secretName: '$(acrsecret)'
+              dockerRegistryEndpoint: 'devopsDemo87'
+        
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'deploy'
+              namespace: 'default'
+              manifests: |
+                $(Pipeline.Workspace)/manifests/deployment.yml
+                $(Pipeline.Workspace)/manifests/service.yml
+              containers: 'devopsDemo87.azurecr.io/${{ variables.acrrepo }}:${{ variables.tag }}'
