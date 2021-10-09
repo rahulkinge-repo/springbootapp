@@ -4,49 +4,49 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
-- master
+  - master
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
 
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'sonarConnection'
-    organization: 'app-org-scanner'
-    scannerMode: 'Other'
-    extraProperties:
-      sonar.projectKey=learning-spring
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'sonarConnection'
+      organization: 'app-org-scanner'
+      scannerMode: 'Other'
+      extraProperties:
+        sonar.projectKey=learning-spring
 
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: true
-    sqMavenPluginVersionChoice: 'latest'
-    goals: 'package'
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: true
+      sqMavenPluginVersionChoice: 'latest'
+      goals: 'package'
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/TEST-*.xml'
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/TEST-*.xml'
+  - task: SonarCloudPublish@1
+    inputs:
+      pollingTimeoutSec: '300'
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'springbootapp'
-    publishLocation: 'pipeline'
-    
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Pipeline.Workspace)'
+      artifact: 'springbootapp'
+      publishLocation: 'pipeline'
+
 - task: Docker@2
   inputs:
     containerRegistry: 'devopsDemo87'
