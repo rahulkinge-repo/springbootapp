@@ -10,7 +10,7 @@
             }
         },
         "location": {
-            "defaultValue": "[resourceGroup().location]",
+            "defaultValue": "Central US",
             "type": "string",
             "metadata": {
                 "description": "The location of AKS resource."
