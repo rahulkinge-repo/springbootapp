@@ -9,6 +9,8 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  - template: parameters.yml
 steps:
 
   - task: SonarCloudPrepare@1
@@ -17,7 +19,7 @@ steps:
       organization: 'app-org-scanner'
       scannerMode: 'Other'
       extraProperties:
-        sonar.projectKey=learning-spring
+        sonar.projectKey=${{ variables.sonarprojectKey }}
 
   - task: Maven@3
     inputs:
@@ -25,7 +27,7 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
+      jdkVersionOption: '${ variables.jdkVersion }'
       mavenVersionOption: 'Default'
       mavenAuthenticateFeed: false
       effectivePomSkip: false

@@ -1,0 +1,3 @@
+variables:
+  sonarprojectKey: 'learning-spring'
+  jdkVersion: '1.11'
