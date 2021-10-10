@@ -16,4 +16,4 @@ spec:
         - name: devopsdemo87
           image: devopsdemo87.azurecr.io/devopsdemo87
           ports:
-          - containerPort: 8081
+          - containerPort: 8080
