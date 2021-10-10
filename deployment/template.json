@@ -4,7 +4,7 @@
     "parameters": {
         "aksClusterName": {
             "type": "string",
-            "defaultValue": "aks101cluster-vmss",
+            "defaultValue": "aks101cluster-vmss1",
             "metadata": {
                 "description": "The name of the Managed Cluster resource."
             }
