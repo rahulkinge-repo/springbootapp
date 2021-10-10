@@ -13,7 +13,7 @@ spec:
         app: devopsdemo87
     spec:
       containers:
-        - name: devopsDemo87
+        - name: devopsdemo87
           image: devopsdemo87.azurecr.io/devopsdemo87
           ports:
           - containerPort: 80
