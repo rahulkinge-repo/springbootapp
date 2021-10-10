@@ -76,7 +76,6 @@ stages:
   jobs:
   - deployment: Deploy
     displayName: Deploy to AKS
-    environment: 'k8sdev.default'
     pool: 
       vmImage: ubuntu-latest
     strategy:
@@ -86,8 +85,8 @@ stages:
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
-              azureResourceManagerConnection: '<your-resource-manager-connection>'
-              subscriptionId: '<your-subscription-id>'
+              azureResourceManagerConnection: 'Azure subscription 1 (2c4cd66e-64e1-4711-8d8e-66f00fb36f53)'
+              subscriptionId: '2c4cd66e-64e1-4711-8d8e-66f00fb36f53'
               action: 'Create Or Update Resource Group'
               resourceGroupName: ''
               location: ''
@@ -107,7 +106,7 @@ stages:
               namespace: 'default'
               secretType: 'dockerRegistry'
               secretName: '$(acrsecret)'
-              dockerRegistryEndpoint: 'devopsDemo87'
+              dockerRegistryEndpoint: 'devopsdemo87.azurecr.io'
         
           - task: KubernetesManifest@0
             inputs:
