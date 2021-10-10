@@ -63,22 +63,29 @@ stages:
         repository: ${{ variables.acrrepo }}
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-    
 
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        buildType: 'current'
-        artifactName: 'manifests'
-        targetPath: '$(Pipeline.Workspace)/manifests'
-        
-    - task: KubernetesManifest@0
-      inputs:
-        action: 'deploy'
-        kubernetesServiceConnection: 'kube-connection'
-        namespace: 'default'
-        manifests: |
-          $(Pipeline.Workspace)/manifests/deployment.yml
-          $(Pipeline.Workspace)/manifests/service.yml
-        containers: 'devopsDemo87.azurecr.io/${{ variables.acrrepo }}:${{ variables.tag }}'
+- stage: Deploy
+  displayName: Deploy stage
+  jobs:
+    - job: Deploy
+      displayName: Deploy
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'manifests'
+          targetPath: '$(Pipeline.Workspace)/manifests'
+
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: 'kube-connection'
+          namespace: 'default'
+          manifests: |
+            $(Pipeline.Workspace)/manifests/deployment.yml
+            $(Pipeline.Workspace)/manifests/service.yml
+          containers: 'devopsdemo87.azurecr.io/${{ variables.acrrepo }}:${{ variables.tag }}'
 
 
