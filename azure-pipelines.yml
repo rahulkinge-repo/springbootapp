@@ -64,7 +64,19 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
     
-        
+
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+       deploymentScope: 'Resource Group'
+       azureResourceManagerConnection: 'Azure subscription 1 (2c4cd66e-64e1-4711-8d8e-66f00fb36f53)'
+       subscriptionId: '2c4cd66e-64e1-4711-8d8e-66f00fb36f53'
+       action: 'Create Or Update Resource Group'
+       resourceGroupName: 'devopsrg'
+       location: 'Central US'
+       templateLocation: 'Linked artifact'
+       csmFile: '$(Build.ArtifactStagingDirectory)/s/deployment/template.json'
+       csmParametersFile: '$(Build.ArtifactStagingDirectory)/s/deployment/parametersFile.json'
+       deploymentMode: 'Incremental'
     
 
 - stage: Deploy
@@ -74,26 +86,11 @@ stages:
     acrsecret: acrauth
     
   jobs:
-  - deployment: Deploy
+  - job: Deploy
     displayName: Deploy to AKS
     pool: 
       vmImage: ubuntu-latest
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureResourceManagerTemplateDeployment@3
-            inputs:
-              deploymentScope: 'Resource Group'
-              azureResourceManagerConnection: 'Azure subscription 1 (2c4cd66e-64e1-4711-8d8e-66f00fb36f53)'
-              subscriptionId: '2c4cd66e-64e1-4711-8d8e-66f00fb36f53'
-              action: 'Create Or Update Resource Group'
-              resourceGroupName: ''
-              location: ''
-              templateLocation: 'Linked artifact'
-              csmFile: '$(Build.ArtifactStagingDirectory)/s/deployment/template.json'
-              csmParametersFile: '$(Build.ArtifactStagingDirectory)/s/deployment/parametersFile.json'
-              deploymentMode: 'Incremental'
-          
+      steps:
           - task: DownloadPipelineArtifact@2
             inputs:
               buildType: 'current'
