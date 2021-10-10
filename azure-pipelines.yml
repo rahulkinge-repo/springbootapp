@@ -65,15 +65,29 @@ stages:
         Dockerfile: '**/Dockerfile'
     
 
-    - task: AzureResourceManagerTemplateDeployment@3
+    - task: DownloadPipelineArtifact@2
       inputs:
-       deploymentScope: 'Resource Group'
-       azureResourceManagerConnection: 'Azure subscription 1 (2c4cd66e-64e1-4711-8d8e-66f00fb36f53)'
-       subscriptionId: '2c4cd66e-64e1-4711-8d8e-66f00fb36f53'
-       action: 'Create Or Update Resource Group'
-       resourceGroupName: 'devopsrg'
-       location: 'Central US'
-       templateLocation: 'Linked artifact'
-       csmFile: '$(Pipeline.Workspace)/s/deployment/template.json'
-       csmParametersFile: '$(Pipeline.Workspace)/s/deployment/parametersFile.json'
-       deploymentMode: 'Incremental'
+        buildType: 'current'
+        artifactName: 'manifests'
+        targetPath: '$(Pipeline.Workspace)/manifests'
+          
+    - task: KubernetesManifest@0
+      inputs:
+        action: 'createSecret'
+        kubernetesServiceConnection: 'kube-conection'
+        namespace: 'default'
+        secretType: 'dockerRegistry'
+        secretName: '$(acrsecret)'
+        dockerRegistryEndpoint: 'devopsdemo87'
+        
+    - task: KubernetesManifest@0
+      inputs:
+        action: 'deploy'
+        kubernetesServiceConnection: 'kube-conection'
+        namespace: 'default'
+        manifests: |
+          $(Pipeline.Workspace)/manifests/deployment.yml
+          $(Pipeline.Workspace)/manifests/service.yml
+        containers: 'devopsDemo87.azurecr.io/${{ variables.acrrepo }}:${{ variables.tag }}'
+
+
