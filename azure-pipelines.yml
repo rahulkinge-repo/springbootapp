@@ -78,7 +78,6 @@ stages:
     displayName: Deploy to AKS
     pool: 
       vmImage: ubuntu-latest
-    strategy:
       runOnce:
         deploy:
           steps:
