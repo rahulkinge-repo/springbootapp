@@ -9,6 +9,7 @@ trigger:
 variables:
   - template: parameters.yml
 
+
 stages:
 - stage: Build
   displayName: Build stage
@@ -77,6 +78,15 @@ stages:
           buildType: 'current'
           artifactName: 'manifests'
           targetPath: '$(Pipeline.Workspace)/manifests'
+
+      - task: KubernetesManifest@0
+        inputs:
+              action: 'createSecret'
+              namespace: 'default'
+              kubernetesServiceConnection: 'kube-connection'
+              secretType: 'dockerRegistry'
+              secretName: '$(acrsecret)'
+              dockerRegistryEndpoint: 'devopsDemo87'
 
       - task: KubernetesManifest@0
         inputs:
