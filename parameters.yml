@@ -4,5 +4,5 @@ variables:
   artifactname: 'springbootapp'
   acrname: 'devopsDemo87'
   acrrepo: 'devopsDemo87'
-
+  tag: '$(Build.BuildId)'
 
