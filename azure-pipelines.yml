@@ -70,15 +70,6 @@ stages:
         buildType: 'current'
         artifactName: 'manifests'
         targetPath: '$(Pipeline.Workspace)/manifests'
-          
-    - task: KubernetesManifest@0
-      inputs:
-        action: 'createSecret'
-        kubernetesServiceConnection: 'kube-connection'
-        namespace: 'default'
-        secretType: 'dockerRegistry'
-        secretName: '$(acrsecret)'
-        dockerRegistryEndpoint: 'devopsdemo87'
         
     - task: KubernetesManifest@0
       inputs:
